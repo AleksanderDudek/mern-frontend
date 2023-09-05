@@ -3,7 +3,7 @@ import React from "react";
 const Footer = () => {
   return (
     <div className="footer">
-      <h3>Footer component @2023</h3>
+      <h3>Universal MERN Template @2023</h3>
     </div>
   );
 };

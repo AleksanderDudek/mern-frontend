@@ -9,6 +9,11 @@
 
 .header-ul {
   list-style-type: none;
+  margin: 0;
+}
+
+.nav-right {
+  text-align: right;
 }
 
 .header-ul li {
