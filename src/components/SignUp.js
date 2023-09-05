@@ -1,12 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [name, setName] = useState(localStorage.getItem("user")?.name || "");
+  const [email, setEmail] = useState(localStorage.getItem("user")?.email || "");
+  const [password, setPassword] = useState(
+    localStorage.getItem("user")?.password || ""
+  );
+  const navigate = useNavigate();
 
-  const collectData = () => {
+  useEffect(() => {
+    const auth = localStorage.getItem("user");
+    auth && navigate("/");
+  }, []);
+
+  // add env file
+  const collectData = async () => {
     console.log(name, email, password);
+    let result = await fetch("http://localhost:5005/register", {
+      method: "post",
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    result = await result.json();
+    // persistent after closing, stores in browser
+    localStorage.setItem("user", JSON.stringify(result));
+    // session storage is only persistent when tab is opened
+    //cookie timely holding
+    navigate("/");
   };
 
   // todo add confirm password
@@ -39,7 +66,7 @@ const SignUp = () => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <button className="register-button" type="button" onClick={collectData}>
+      <button className="app-button" type="button" onClick={collectData}>
         Sign up
       </button>
     </div>

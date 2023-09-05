@@ -20,6 +20,11 @@
   margin-left: 30%;
 }
 
+.login {
+  margin-left: 30%;
+  margin-top: 100px;
+}
+
 .input-box {
   display: block;
   padding: 7px;
@@ -28,7 +33,7 @@
   margin: 20px;
 }
 
-.register-button {
+.app-button {
   margin: 20px;
   width: 150px;
   padding: 10px;
