@@ -6,6 +6,9 @@ import SignUp from "./components/SignUp";
 import PrivateComponent from "./components/PrivateComponent";
 import Login from "./components/Login";
 import AddProduct from "./components/AddProduct";
+import ProductList from "./components/ProductList";
+import UpdateProduct from "./components/UpdateProduct";
+
 // change all components to typescript
 
 // add withAuth HOC?
@@ -18,9 +21,9 @@ function App() {
         <Routes>
           {/* private component is a guard in this example */}
           <Route element={<PrivateComponent />}>
-            <Route path="/" element={<h1>Product component</h1>} />
+            <Route path="/" element={<ProductList />} />
             <Route path="/add" element={<AddProduct />} />
-            <Route path="/update" element={<h1>Update product component</h1>} />
+            <Route path="/update/:id" element={<UpdateProduct />} />
             <Route path="/logout" element={<h1>Logout component</h1>} />
             <Route path="/profile" element={<h1>Profile component</h1>} />
           </Route>

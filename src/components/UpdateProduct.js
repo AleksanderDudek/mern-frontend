@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
-const AddProduct = () => {
+const UpdateProduct = () => {
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState("");
   const [productCategory, setProductCategory] = useState("");
@@ -10,8 +10,23 @@ const AddProduct = () => {
   const [error, setError] = useState(false);
 
   const navigate = useNavigate();
+  const params = useParams();
 
-  const addProduct = async () => {
+  useEffect(() => {
+    getProduct(params.id);
+  }, []);
+
+  const getProduct = async (_id) => {
+    let result = await fetch(`http://localhost:5005/get-product/${_id}`);
+    result = await result.json();
+    console.warn(result);
+    setProductName(result.name);
+    setProductPrice(result.price);
+    setProductCategory(result.category);
+    setProductCompany(result.company);
+  };
+
+  const updateProduct = async () => {
     if (!productName || !productPrice || !productCategory || !productCompany) {
       setError(true);
       return false;
@@ -21,25 +36,28 @@ const AddProduct = () => {
 
     const userId = localStorage.getItem("user")._id;
 
-    let result = await fetch("http://localhost:5005/add-product", {
-      method: "post",
-      body: JSON.stringify({
-        name: productName,
-        price: productPrice,
-        category: productCategory,
-        company: productCompany,
-        userId: userId,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    let result = await fetch(
+      `http://localhost:5005/update-product/${params.id}`,
+      {
+        method: "put",
+        body: JSON.stringify({
+          name: productName,
+          price: productPrice,
+          category: productCategory,
+          company: productCompany,
+          userId: userId,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     console.log(result);
     navigate("/");
   };
   return (
     <div>
-      <h1>Add Product</h1>
+      <h1>Update Product</h1>
       <input
         className="input-box"
         type="text"
@@ -81,11 +99,11 @@ const AddProduct = () => {
       {error && !productCompany && (
         <span className="invalid-input">Enter valid company</span>
       )}
-      <button className="app-button" type="button" onClick={addProduct}>
-        Add product
+      <button className="app-button" type="button" onClick={updateProduct}>
+        Update product
       </button>
     </div>
   );
 };
 
-export default AddProduct;
+export default UpdateProduct;
