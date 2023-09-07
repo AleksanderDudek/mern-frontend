@@ -26,9 +26,44 @@ const ProductList = () => {
     console.log(result);
     if (result) getProducts();
   };
+
+  const onSearchChange = async (event) => {
+    let key = event.target.value.toString();
+    if (key) {
+      if (key.length < 3) return;
+
+      let result = await fetch(`http://localhost:5005/search-product/${key}`, {
+        method: "get",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      result = await result.json();
+
+      console.log(result);
+      // set products with the search result
+      if (result) setProducts(result);
+      // for the above it can be optimized with react-query as store for that data
+    } else {
+      getProducts();
+    }
+  };
+
   return (
     <div className="product-list">
       <h3>Product List</h3>
+      <div className="product-search">
+        <input
+          type="text"
+          className="product-search-input"
+          placeholder="Search product by key..."
+          onChange={onSearchChange}
+        />
+        <span className="product-search-helper">
+          It is case sensitive. Enter at least 3 signs.
+        </span>
+      </div>
       <ul>
         <li>S. No.</li>
         <li>Name</li>

@@ -16,13 +16,25 @@ const Login = () => {
       },
     });
     result = await result.json();
-    if (result.name) {
+
+    if (result.auth) {
       // local storage takes string only
-      localStorage.setItem("user", JSON.stringify(result));
+      localStorage.setItem("user", JSON.stringify(result.result));
+      localStorage.setItem("token", JSON.stringify(result.auth));
+
       navigate("/");
     } else {
       alert("Please enter correct details");
     }
+
+    // if (result.auth) {
+    //   // local storage takes string only
+    //   localStorage.setItem("user", JSON.stringify(result.user));
+    //   localStorage.setItem("token", JSON.stringify(result.auth));
+    //   navigate("/");
+    // } else {
+    //   alert("Please enter correct details");
+    // }
   };
 
   return (

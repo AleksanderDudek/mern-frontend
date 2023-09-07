@@ -30,7 +30,10 @@ const SignUp = () => {
     });
     result = await result.json();
     // persistent after closing, stores in browser
-    localStorage.setItem("user", JSON.stringify(result));
+    // local storage takes string only
+    localStorage.setItem("user", JSON.stringify(result.result));
+    localStorage.setItem("token", JSON.stringify(result.auth));
+
     // session storage is only persistent when tab is opened
     //cookie timely holding
     navigate("/");
